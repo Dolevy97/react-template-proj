@@ -12,7 +12,7 @@ export function LongTxt({ txt }, { length = 100 }) {
         }
     }
 
-    function showMore({ target }) {
+    function showMore() {
         setIsShowingMore(prevIsShowing => !prevIsShowing)
     }
 

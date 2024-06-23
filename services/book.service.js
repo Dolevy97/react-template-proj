@@ -27,6 +27,20 @@ function query(filterBy = {}) {
             if (filterBy.price) {
                 books = books.filter(book => book.listPrice.amount > filterBy.price)
             }
+
+            // if (filterBy.year) {
+            //     books = books.filter(book => book.publishedDate > filterBy.year)
+            // }
+
+            if (filterBy.year) {
+                const currYear = new Date().getFullYear()
+                if (filterBy.year === 'vintage') books = books.filter(book => book.publishedDate < currYear - 10)
+                if (filterBy.year === 'new') books = books.filter(book => book.publishedDate > currYear - 10)
+            }
+
+            if (filterBy.bookLength) {
+                books = books.filter(book => book.pageCount > filterBy.bookLength)
+            }
             return books
         })
 }
@@ -52,8 +66,11 @@ function getFilterBy() {
 }
 
 function setFilterBy(filterBy = {}) {
-    if (filterBy.txt !== undefined) gFilterBy.txt = filterBy.txt
-    return gFilterBy
+    if (filterBy.txt !== undefined) filterBy.txt = filterBy.txt
+    if (filterBy.price !== undefined) filterBy.price = filterBy.price
+    if (filterBy.year !== undefined) filterBy.year = filterBy.year
+    if (filterBy.bookLength !== undefined) filterBy.bookLength = filterBy.bookLength
+    return filterBy
 }
 
 function getNextBookId(bookId) {
@@ -66,7 +83,7 @@ function getNextBookId(bookId) {
 }
 
 function getDefaultFilter() {
-    return { title: '', price: '' }
+    return { title: '', price: '', year: '', bookLength: '0' }
 }
 
 // PRIVATE FUNCTIONS

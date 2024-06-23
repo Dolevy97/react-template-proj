@@ -19,25 +19,40 @@ export function BookFilter({ filterBy, onSetFilter }) {
 
             case 'checkbox':
                 value = target.checked
-                break
+                break;
 
+            case 'radio':
+                value = target.id
+                break;
             default:
                 break;
         }
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
 
-    const { title, price } = filterByToEdit
+    const { title, price, year, bookLength } = filterByToEdit
 
     return (
         <section className="car-filter">
             <form>
-            <h2>Filter Books</h2>
+                <h2>Filter Books</h2>
                 <label htmlFor="title">Title</label>
                 <input value={title} onChange={handleChange} name="title" type="text" id="title" />
 
                 <label htmlFor="price">Price</label>
                 <input value={price || ''} onChange={handleChange} name="price" type="number" id="price" />
+
+                <section className="radio-year">
+                    <label htmlFor="vintage">Vintage</label>
+                    <input checked={year === 'vintage'} onChange={handleChange} type="radio" name="year" id="vintage" />
+                    <label htmlFor="new">New</label>
+                    <input checked={year === 'new'} onChange={handleChange} type="radio" name="year" id="new" />
+                </section>
+
+                <label htmlFor="book-length">Book has atleast {bookLength} pages</label>
+                <input value={bookLength || ''} onChange={handleChange} name="bookLength" min={0} max={800} type="range" id="page-length" />
+
+
             </form>
         </section>
     )
