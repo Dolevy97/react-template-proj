@@ -1,0 +1,21 @@
+.car-filter {
+    min-width: 200px;
+    width: 50vw;
+
+    border-radius: 8px;
+    margin: .5em auto;
+    padding: .5em;
+    background-color: var(--clr2);
+}
+
+.car-filter form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4em;
+}
+
+.car-filter form input {
+    padding-inline: .5em;
+    border-radius: 8px;
+}

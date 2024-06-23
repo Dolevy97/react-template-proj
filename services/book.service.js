@@ -2,7 +2,6 @@ import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'bookDB'
-var gFilterBy = { txt: '' }
 var gNextId = 1
 
 _createBooks()
@@ -14,15 +13,19 @@ export const bookService = {
     save,
     getNextBookId,
     getFilterBy,
-    setFilterBy
+    setFilterBy,
+    getDefaultFilter,
 }
 
-function query() {
+function query(filterBy = {}) {
     return storageService.query(BOOK_KEY)
         .then(books => {
-            if (gFilterBy.txt) {
-                const regex = new RegExp(gFilterBy.txt, 'i')
+            if (filterBy.title) {
+                const regex = new RegExp(filterBy.title, 'i')
                 books = books.filter(book => regex.test(book.title))
+            }
+            if (filterBy.price) {
+                books = books.filter(book => book.listPrice.amount > filterBy.price)
             }
             return books
         })
@@ -60,6 +63,10 @@ function getNextBookId(bookId) {
             if (nextBookIdx === books.length) nextBookIdx = 0
             return books[nextBookIdx].id
         })
+}
+
+function getDefaultFilter() {
+    return { title: '', price: '' }
 }
 
 // PRIVATE FUNCTIONS
