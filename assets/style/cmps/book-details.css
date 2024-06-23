@@ -1,6 +1,16 @@
 .book-details {
+    color:var(--gray3);
     text-shadow: 1px 1px 3px rgb(0 0 0 / 0.4);
 }
+
+.book-details h2:first-of-type, .book-details h3:first-of-type, .book-details h4:first-of-type {
+    margin: 0;
+}
+
+.book-details p {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 
 .book-img {
     position: relative;

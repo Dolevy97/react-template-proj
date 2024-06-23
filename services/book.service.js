@@ -12,7 +12,6 @@ export const bookService = {
     remove,
     save,
     getNextBookId,
-    getFilterBy,
     setFilterBy,
     getDefaultFilter,
 }
@@ -27,10 +26,6 @@ function query(filterBy = {}) {
             if (filterBy.price) {
                 books = books.filter(book => book.listPrice.amount > filterBy.price)
             }
-
-            // if (filterBy.year) {
-            //     books = books.filter(book => book.publishedDate > filterBy.year)
-            // }
 
             if (filterBy.year) {
                 const currYear = new Date().getFullYear()
@@ -60,11 +55,6 @@ function save(book) {
         return storageService.post(BOOK_KEY, book)
     }
 }
-
-function getFilterBy() {
-    return { ...gFilterBy }
-}
-
 function setFilterBy(filterBy = {}) {
     if (filterBy.txt !== undefined) filterBy.txt = filterBy.txt
     if (filterBy.price !== undefined) filterBy.price = filterBy.price

@@ -3,6 +3,8 @@
 }
 
 html {
+  
+  background-color: var(--clr3);
 }
 
 body {
@@ -18,6 +20,10 @@ h5,
 h6 {
   margin: .5em 0 .5em;
   font-family: 'Edu VIC WA NT Beginner', cursive;
+}
+
+h1 {
+  font-size: 1.5em;
 }
 
 p {

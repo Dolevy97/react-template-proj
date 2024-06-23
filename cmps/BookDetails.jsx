@@ -54,9 +54,9 @@ export function BookDetails({ bookId, onBack }) {
             <h2>{book.title}</h2>
             <h3>{book.subtitle}</h3>
             <h4>-By {`${book.authors.join(' ')}`}</h4>
+            <LongTxt txt={book.description} />
             <h3>{getReadingLength()} ({book.pageCount} pages), {getPublishedDate()} ({book.publishedDate}) </h3>
 
-            <LongTxt txt={book.description} />
 
             <h3>Genres: {book.categories.map((genre, idx) => {
                 return <React.Fragment key={utilService.makeId()}>

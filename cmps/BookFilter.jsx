@@ -30,10 +30,14 @@ export function BookFilter({ filterBy, onSetFilter }) {
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
 
+    function clearFilter() {
+        setFilterByToEdit(bookService.getDefaultFilter())
+    }
+
     const { title, price, year, bookLength } = filterByToEdit
 
     return (
-        <section className="car-filter">
+        <section className="book-filter">
             <form>
                 <h2>Filter Books</h2>
                 <label htmlFor="title">Title</label>
@@ -50,9 +54,9 @@ export function BookFilter({ filterBy, onSetFilter }) {
                 </section>
 
                 <label htmlFor="book-length">Book has atleast {bookLength} pages</label>
-                <input value={bookLength || ''} onChange={handleChange} name="bookLength" min={0} max={800} type="range" id="page-length" />
+                <input value={bookLength || 0} onChange={handleChange} name="bookLength" min={0} max={800} type="range" id="page-length" />
 
-
+                <button onClick={clearFilter}>Clear Filter</button>
             </form>
         </section>
     )
