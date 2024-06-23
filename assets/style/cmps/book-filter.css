@@ -6,6 +6,8 @@
     margin: .5em auto;
     padding: .5em;
     background-color: var(--clr2);
+
+    box-shadow: 0px 1px 3px black;
 }
 
 .car-filter form {

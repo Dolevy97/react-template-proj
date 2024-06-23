@@ -1,0 +1,12 @@
+.book-img {
+    position: relative;
+}
+
+.sale {
+    position: absolute;
+    top: 116px;
+    left: 36.5px;
+
+    opacity: .8;
+    width: 300px;
+}

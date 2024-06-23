@@ -17,4 +17,5 @@
 /* Components */
 @import 'cmps/user-msg.css';
 @import 'cmps/Navbar.css';
-@import 'cmps/car-filter.css';
+@import 'cmps/book-filter.css';
+@import 'cmps/book-details.css';
