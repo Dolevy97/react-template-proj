@@ -28,3 +28,14 @@
 .btn-back {
     display: block;
 }
+
+.btn-add {
+    display: block;
+    margin: 1em auto;
+    background-color: var(--clr2);
+    box-shadow: 0 1px 4px black;
+}
+
+.btn-add:hover {
+    background-color: var(--clr1);
+}

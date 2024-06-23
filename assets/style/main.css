@@ -12,6 +12,7 @@
 /* Pages */
 @import 'pages/Books.css';
 @import 'pages/About.css';
+@import 'pages/Home.css';
 
 
 /* Components */
@@ -20,3 +21,4 @@
 @import 'cmps/book-filter.css';
 @import 'cmps/book-details.css';
 @import 'cmps/long-text.css';
+@import 'cmps/add-book.css';

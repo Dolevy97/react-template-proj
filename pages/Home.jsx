@@ -1,7 +1,7 @@
 export function Home() {
     return (
-        <section>
-            <h2>Home Sweet Home</h2>
+        <section className="home-container">
+            <h1>Welcome to Miss Books!</h1>
         </section>
     )
 }

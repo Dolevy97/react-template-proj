@@ -25,3 +25,12 @@
 .radio-year input:first-of-type {
     margin-inline-end: 1em;
 }
+
+.book-filter button {
+    background-color: var(--clr3);
+    box-shadow: 0 1px 4px black;
+}
+
+.book-filter button:hover {
+    background-color: var(--clr1);
+}
