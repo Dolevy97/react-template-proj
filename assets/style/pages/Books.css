@@ -24,3 +24,7 @@
 .book-thumbnail {
     height: 250px;
 }
+
+.btn-back {
+    display: block;
+}
