@@ -1,8 +1,7 @@
+import { About } from "./pages/About.jsx"
 import { Books } from "./pages/books.jsx"
 
 const { useState } = React
-
-
 
 export function App() {
     const [page, setPage] = useState('books')
@@ -20,7 +19,7 @@ export function App() {
 
             <main className="main-layout">
                 {/* {page === 'home' && <Home />} */}
-                {/* {page === 'about' && <About />} */}
+                {page === 'about' && <About />}
                 {page === 'books' && <Books />}
             </main>
 

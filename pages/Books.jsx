@@ -1,6 +1,7 @@
 const { useState, useEffect } = React;
-import { bookService } from "../services/book.service.js";
 
+import { BookIndex } from "../cmps/BookIndex.jsx";
+import { bookService } from "../services/book.service.js";
 
 export function Books() {
     const [books, setBooks] = useState([])
@@ -8,12 +9,14 @@ export function Books() {
     useEffect(() => {
         bookService.query()
             .then(books => {
-                console.log(books)
                 setBooks(books)
             })
     }, [])
 
+
+    if (!books.length) return <h2>Loading...</h2>
     return (
-        <h3>books</h3>
+        <BookIndex books={books} />
     )
 }
+
