@@ -3,7 +3,7 @@ import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'bookDB'
 var gFilterBy = { txt: '' }
-var gNextId = 0
+var gNextId = 1
 
 _createBooks()
 

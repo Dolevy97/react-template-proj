@@ -1,12 +1,10 @@
 export function BookIndex({ books }) {
     return (
         <section className="books-container">
-            <h2>books</h2>
-            <ul>
-                {books.map(book => <li key={book.id}>
-                    {book.title}
-                </li>)}
-            </ul>
+            {books.map(book => <div className="book-container" key={book.id}>
+                <p>{book.title}</p>
+                <img className="book-thumbnail" src={book.thumbnail}></img>
+            </div>)}
         </section>
     )
 }
