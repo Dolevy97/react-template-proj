@@ -1,5 +1,6 @@
 import { bookService } from "../services/book.service.js"
 import { utilService } from "../services/util.service.js"
+import { LongTxt } from "./LongTxt.jsx"
 
 bookService
 
@@ -13,7 +14,6 @@ export function BookDetails({ bookId, onBack }) {
         bookService.get(bookId)
             .then(book => {
                 setBook(book)
-                console.log(book)
             })
 
     }, [])
@@ -55,7 +55,9 @@ export function BookDetails({ bookId, onBack }) {
             <h3>{book.subtitle}</h3>
             <h4>-By {`${book.authors.join(' ')}`}</h4>
             <h3>{getReadingLength()} ({book.pageCount} pages), {getPublishedDate()} </h3>
-            <h4 className="description">{book.description}</h4>
+
+            <LongTxt txt={book.description} />
+
             <h3>Genres: {book.categories.map((genre, idx) => {
                 return <React.Fragment key={utilService.makeId()}>
                     {idx > 0 && ' '}
