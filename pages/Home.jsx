@@ -1,5 +1,3 @@
-import { UserPreview } from './UserPreview.jsx'
-
 export function Home() {
     return (
         <section>

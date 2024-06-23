@@ -4,6 +4,16 @@
     flex-wrap: wrap;
     gap: 1.5em;
 
+    margin-block: 1em;
+}
+
+.book-container {
+    transition: scale .3s;
+}
+
+.book-container:hover {
+    scale: 1.1;
+    cursor: pointer;
 }
 
 .book-container p {

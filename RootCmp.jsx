@@ -1,5 +1,6 @@
 import { About } from "./pages/About.jsx"
-import { Books } from "./pages/books.jsx"
+import { Home } from "./pages/Home.jsx"
+import { Books } from "./pages/BookIndex.jsx"
 
 const { useState } = React
 
@@ -18,7 +19,7 @@ export function App() {
             </header>
 
             <main className="main-layout">
-                {/* {page === 'home' && <Home />} */}
+                {page === 'home' && <Home />}
                 {page === 'about' && <About />}
                 {page === 'books' && <Books />}
             </main>

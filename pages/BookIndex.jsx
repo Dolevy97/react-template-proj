@@ -1,6 +1,6 @@
 const { useState, useEffect } = React;
 
-import { BookIndex } from "../cmps/BookIndex.jsx";
+import { BookList } from "../cmps/Booklist.jsx";
 import { bookService } from "../services/book.service.js";
 
 export function Books() {
@@ -16,7 +16,7 @@ export function Books() {
 
     if (!books.length) return <h2>Loading...</h2>
     return (
-        <BookIndex books={books} />
+        <BookList books={books} />
     )
 }
 
