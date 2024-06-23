@@ -1,3 +1,7 @@
+.book-details {
+    text-shadow: 1px 1px 3px rgb(0 0 0 / 0.4);
+}
+
 .book-img {
     position: relative;
 }
@@ -9,4 +13,28 @@
 
     opacity: .8;
     width: 300px;
+}
+
+.green-text {
+    color: lightgreen;
+}
+
+.red-text {
+    color: lightcoral;
+}
+
+.description {
+    margin-block: 1.5em;
+}
+
+.genre {
+    text-decoration: underline;
+}
+
+.genre:hover {
+    cursor: pointer;
+}
+
+.genre span {
+    white-space: pre-wrap;
 }

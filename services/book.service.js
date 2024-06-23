@@ -95,7 +95,7 @@ function _createBook() {
         publishedDate: utilService.getRandomIntInclusive(1950, 2024),
         description: utilService.makeLorem(20),
         pageCount: utilService.getRandomIntInclusive(20, 600),
-        categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
+        categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)], ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
         thumbnail: `http://coding-academy.org/books-photos/${gNextId++}.jpg`,
         language: "en",
         listPrice: {
