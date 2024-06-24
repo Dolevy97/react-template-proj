@@ -47,9 +47,8 @@ export function BookDetails() {
     }
 
 
-    function onAddReview(ev) {
+    function onAddReview(ev, review) {
         ev.preventDefault()
-        const review = { id: utilService.makeId(), fullName: 'Dolev', rating: 5, readAt: '03/05/2024' }
         bookService.addReview(bookId, review)
             .then(book => setBook(book))
     }
@@ -63,6 +62,8 @@ export function BookDetails() {
         <React.Fragment>
 
             <Link to="/book"><button className="btn-back">Back</button></Link>
+            <button>Prev</button>
+            <button>Next</button>
 
             <section className="book-details">
 

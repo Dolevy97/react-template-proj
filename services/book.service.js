@@ -15,7 +15,8 @@ export const bookService = {
     setFilterBy,
     getDefaultFilter,
     getEmptyBook,
-    addReview
+    addReview,
+    getEmptyReview
 }
 
 function query(filterBy = {}) {
@@ -109,11 +110,16 @@ function getEmptyBook(title = '', amount = 0, thumbnail = `http://coding-academy
 }
 
 function addReview(bookId, review) {
+    review.id = utilService.makeId()
     return storageService.get(BOOK_KEY, bookId)
         .then(book => {
             book.reviews.push(review)
             return storageService.put(BOOK_KEY, book)
         })
+}
+
+function getEmptyReview() {
+    return { fullName: '', rating: '', readAt: '' }
 }
 
 // PRIVATE FUNCTIONS

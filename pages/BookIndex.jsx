@@ -5,6 +5,7 @@ import { BookFilter } from "../cmps/BookFilter.jsx";
 import { BookList } from "../cmps/Booklist.jsx";
 import { bookService } from "../services/book.service.js";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { BookAdd } from "./BookAdd.jsx";
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
@@ -39,6 +40,7 @@ export function BookIndex() {
 
     return (
         <section className="book-index">
+            <BookAdd />
             <Link to="/book/edit"><button className="btn-add">Add Book</button></Link>
             <React.Fragment>
                 <BookFilter filterBy={filterBy} onSetFilter={onSetFilter} />
