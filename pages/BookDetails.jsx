@@ -70,8 +70,7 @@ export function BookDetails() {
     }
 
     if (!book) return <div>Loading...</div>
-
-
+    if (!books) return
     const currBookIdx = books.findIndex(book => book.id === bookId)
     const prevBookId = currBookIdx > 0 ? books[currBookIdx - 1].id : null;
     const nextBookId = (currBookIdx < books.length - 1) ? books[currBookIdx + 1].id : null;
@@ -81,8 +80,8 @@ export function BookDetails() {
         <React.Fragment>
             <div className="page-btns">
                 <Link to="/book"><button className="btn-back">Back</button></Link>
-                {prevBookId && <Link to={`/book/${prevBookId}`}><button>Prev</button></Link>}
-                {nextBookId && <Link to={`/book/${nextBookId}`}><button>Next</button></Link>}
+                {prevBookId && <Link to={`/book/${prevBookId}`}><button>Previous Book</button></Link>}
+                {nextBookId && <Link to={`/book/${nextBookId}`}><button>Next Book</button></Link>}
             </div>
 
             <section className="book-details">

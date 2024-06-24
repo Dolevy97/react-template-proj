@@ -16,7 +16,8 @@ export const bookService = {
     getDefaultFilter,
     getEmptyBook,
     addReview,
-    getEmptyReview
+    getEmptyReview,
+    addGoogleItem
 }
 
 function query(filterBy = {}) {
@@ -120,6 +121,10 @@ function addReview(bookId, review) {
 
 function getEmptyReview() {
     return { fullName: '', rating: '', readAt: '' }
+}
+
+function addGoogleItem(book) {
+    return storageService.postGoogle(BOOK_KEY, book)
 }
 
 // PRIVATE FUNCTIONS

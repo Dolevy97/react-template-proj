@@ -40,7 +40,7 @@ export function BookIndex() {
 
     return (
         <section className="book-index">
-            <BookAdd />
+            <Link to="/add"><button className="btn-add">Add Book from Google Books</button></Link>
             <Link to="/book/edit"><button className="btn-add">Add Book</button></Link>
             <React.Fragment>
                 <BookFilter filterBy={filterBy} onSetFilter={onSetFilter} />
