@@ -15,14 +15,15 @@ export function BookList({ books, onRemoveBook }) {
             {books.map(book =>
                 <div key={book.id}>
                     <BookPreview book={book} moveToBook={() => moveToBook(book.id)} />
-                    <section className="btns">
-                        <Link to={`/book/edit/${book.id}`}><button>Edit</button></Link>
-                        <button onClick={() => onRemoveBook(book.id)}>Remove</button>
-                    </section>
-                </div>
 
-            )
-            }
+                    <section className="book-actions">
+                        <h4>{book.listPrice.amount} {book.listPrice.currencyCode}</h4>
+                        <section className="btns">
+                            <Link to={`/book/edit/${book.id}`}><button>Edit</button></Link>
+                            <button onClick={() => onRemoveBook(book.id)}>Remove</button>
+                        </section>
+                    </section>
+                </div>)}
         </section >
     )
 }

@@ -23,7 +23,7 @@ export function BookEdit() {
         bookService.get(bookId)
             .then(book => {
                 setBookToEdit(book)
-                setBookToEdit(prevBook => ({ ...prevBook, price: book.listPrice.amount }))
+                console.log(book)
             })
             .catch(err => console.log('err:', err))
     }
@@ -45,7 +45,12 @@ export function BookEdit() {
             default:
                 break;
         }
-        setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
+        if (field === 'amount') {
+            setBookToEdit(prevBook => ({
+                ...prevBook, listPrice:
+                    { ...prevBook.listPrice, amount: value }
+            }))
+        } else setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
     }
 
     function onSaveBook(ev) {
@@ -58,7 +63,8 @@ export function BookEdit() {
             .catch(err => console.log('err!', err))
     }
 
-    const { title, price } = bookToEdit
+    const { title, listPrice, thumbnail } = bookToEdit
+    const { amount } = listPrice
 
     return (
         <section className="book-edit-container">
@@ -68,7 +74,10 @@ export function BookEdit() {
                 <input value={title} onChange={handleChange} type="text" id="title" name="title" />
 
                 <label htmlFor="price">Price</label>
-                <input value={price} onChange={handleChange} type="number" id="price" name="price" />
+                <input value={amount} onChange={handleChange} type="number" id="price" name="amount" />
+
+                <label htmlFor="thumbnail">Image (optional)</label>
+                <input value={thumbnail} onChange={handleChange} type="text" id="thumbnail" name="listPrice[amount]" />
 
                 <button>Save</button>
             </form>

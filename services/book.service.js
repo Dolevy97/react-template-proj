@@ -77,7 +77,7 @@ function getDefaultFilter() {
     return { title: '', price: '', year: '', bookLength: '0' }
 }
 
-function getEmptyBook(title = '', price = '') {
+function getEmptyBook(title = '', amount = 0, thumbnail = `http://coding-academy.org/books-photos/${gNextId}.jpg`) {
     const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
     return {
         title,
@@ -89,10 +89,10 @@ function getEmptyBook(title = '', price = '') {
         description: utilService.makeLorem(20),
         pageCount: utilService.getRandomIntInclusive(20, 600),
         categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)], ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
-        thumbnail: `http://coding-academy.org/books-photos/${gNextId}.jpg`,
+        thumbnail,
         language: "en",
         listPrice: {
-            amount: price,
+            amount,
             currencyCode: "NIS",
             isOnSale: Math.random() > 0.7
         }
