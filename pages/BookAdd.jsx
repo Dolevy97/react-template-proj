@@ -11,7 +11,7 @@ import { googleBookService } from "../services/google.book.service.js"
 
 export function BookAdd() {
     const [books, setBooks] = useState()
-    const [tempBooks, setTempBooks] = useState()
+    const [googleBooks, setGoogleBooks] = useState()
     const [filter, setFilter] = useState({ title: '' })
     const navigate = useNavigate()
 
@@ -31,20 +31,23 @@ export function BookAdd() {
     function loadBooks() {
         googleBookService.query(filter)
             .then(books => {
-                setTempBooks(books)
+                setGoogleBooks(books)
             })
             .catch(err => console.log('Found error! -> ', err))
     }
 
     function getBookById(bookId) {
-        return tempBooks.find(book => book.id === bookId)
+        return googleBooks.find(book => book.id === bookId)
     }
 
     function addGoogleBook(ev, bookId) {
         ev.preventDefault()
         const book = getBookById(bookId)
-        let newBook = bookService.getEmptyBook()
-        newBook = { ...newBook, id: book.id, title: book.title, listPrice: { ...newBook.listPrice, amount: book.price } }
+        let newBook = {
+            ...book, listPrice: {
+                amount: 60, currencyCode: 'NIS', isOnSale: Math.random() > 0.7
+            }
+        }
         const findBook = books.find(book => book.id === bookId)
         if (findBook) return showErrorMsg('Book already exists!')
         bookService.addGoogleItem(newBook)
@@ -59,10 +62,10 @@ export function BookAdd() {
         setFilter(filter)
     }, [filter])
 
-    function handleTxtChange({ target }) {
-        const { value } = target
-        setFilter(prevFilter => ({ ...prevFilter, title: value }))
-    }
+    // function handleTxtChange({ target }) {
+    //     const { value } = target
+    //     setFilter(prevFilter => ({ ...prevFilter, title: value }))
+    // }
 
     function onFilter(ev) {
         ev.preventDefault()
@@ -72,7 +75,8 @@ export function BookAdd() {
 
     const { title } = filter
 
-    if (!tempBooks) return <h4>Loading...</h4>
+    // if (!googleBooks) return <h2>Loading...</h2>
+
     return (
         <section className="google-books">
             <form onSubmit={() => onFilter(event)}>
@@ -83,7 +87,7 @@ export function BookAdd() {
             </form>
 
             <section className="books-list">
-                {tempBooks.map(book => <div className="book-item" key={book.id}>
+                {googleBooks && googleBooks.map(book => <div className="book-item" key={book.id}>
                     <h3>{book.title}</h3>
                     <button onClick={() => addGoogleBook(event, `${book.id}`)} className="btn-google-add">+</button></div>)}
             </section>
