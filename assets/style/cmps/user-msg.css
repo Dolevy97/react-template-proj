@@ -2,23 +2,24 @@
     background-color: lightgray;
     padding: .5em 1em;
     position: fixed;
-    bottom: 0;
-    right: 1em;
-    color: white;
+    top: 0;
+    right: 0;
+    
+    color: var(--gray3);
     font-weight: bold;
-    border-radius: 2px;
+
+    border-bottom-left-radius: 10px;
 }
 
 .user-msg.success {
-    background-color: var(--clr1);
+    background-color: var(--clr4);
 }
 
 .user-msg.error {
-    background-color: var(--clr2);
+    background-color: var(--clr5);
 }
 
-
-.user-msg button{
+.user-msg button {
     float: right;
-    margin: 1em;
+    margin: .5em;
 }

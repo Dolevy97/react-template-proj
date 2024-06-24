@@ -1,6 +1,6 @@
 const { useParams, Link } = ReactRouterDOM
 import { bookService } from "../services/book.service.js"
-import { LongTxt } from "./LongTxt.jsx"
+import { LongTxt } from "../cmps/LongTxt.jsx"
 
 bookService
 
@@ -48,7 +48,7 @@ export function BookDetails() {
     if (!book) return <div>Loading...</div>
     return (
         <section className="book-details">
-            <button className="btn-back"><Link to="/book">Back</Link></button>
+            <Link to="/book"><button className="btn-back">Back</button></Link>
             <img src={book.thumbnail} alt="" />
             {book.listPrice.isOnSale && <img className="sale" src="./assets/img/saletag.png" alt="" />}
             <h2>{book.title}</h2>

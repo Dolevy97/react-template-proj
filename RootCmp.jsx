@@ -7,9 +7,10 @@ import { About } from "./pages/About.jsx"
 import { AboutTeam } from "./cmps/AboutTeam.jsx"
 import { AboutGoal } from "./cmps/aboutGoal.jsx"
 import { BookIndex } from "./pages/BookIndex.jsx"
-import { BookDetails } from "./cmps/BookDetails.jsx"
+import { BookDetails } from "./pages/BookDetails.jsx"
 import { BookEdit } from "./pages/BookEdit.jsx"
 import { NotFound } from "./cmps/NotFound.jsx"
+import { UserMsg } from "./cmps/UserMsg.jsx"
 
 export function App() {
     return (
@@ -32,6 +33,7 @@ export function App() {
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </main>
+                <UserMsg />
             </section>
         </Router>
     )

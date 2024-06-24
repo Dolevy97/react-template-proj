@@ -14,6 +14,7 @@ export const bookService = {
     getNextBookId,
     setFilterBy,
     getDefaultFilter,
+    getEmptyBook
 }
 
 function query(filterBy = {}) {
@@ -74,6 +75,10 @@ function getNextBookId(bookId) {
 
 function getDefaultFilter() {
     return { title: '', price: '', year: '', bookLength: '0' }
+}
+
+function getEmptyBook(title = '', price = '') {
+    return { title, price }
 }
 
 // PRIVATE FUNCTIONS
