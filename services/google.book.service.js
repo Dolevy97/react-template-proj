@@ -28,18 +28,6 @@ function query(filterBy = {}) {
                 const regex = new RegExp(filterBy.title, 'i')
                 books = books.filter(book => regex.test(book.title))
             }
-            if (filterBy.price) {
-                books = books.filter(book => book.listPrice.amount > filterBy.price)
-            }
-
-            if (filterBy.year) {
-                const currYear = new Date().getFullYear()
-                if (filterBy.year === 'vintage') books = books.filter(book => book.publishedDate < currYear - 10)
-                if (filterBy.year === 'new') books = books.filter(book => book.publishedDate > currYear - 10)
-            }
-            if (filterBy.bookLength) {
-                books = books.filter(book => book.pageCount > filterBy.bookLength)
-            }
             return books
         })
 }
