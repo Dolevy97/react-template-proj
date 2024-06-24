@@ -9,6 +9,8 @@ const { useEffect, useState } = React
 export function BookDetails() {
 
     const [book, setBook] = useState(null)
+    const [isAddingReview, setIsAddingReview] = useState(false)
+    const [books, setBooks] = useState(null)
 
     const { bookId } = useParams()
 
@@ -17,7 +19,11 @@ export function BookDetails() {
             .then(book => {
                 setBook(book)
             })
+    }, [books, bookId])
 
+    useEffect(() => {
+        bookService.query()
+            .then(setBooks)
     }, [])
 
     function getReadingLength() {
@@ -46,24 +52,38 @@ export function BookDetails() {
         console.log(filter)
     }
 
-
     function onAddReview(ev, review) {
         ev.preventDefault()
         bookService.addReview(bookId, review)
-            .then(book => setBook(book))
+            .then(book => {
+                setBook(book)
+                setIsAddingReview(false)
+            })
     }
 
     function onDeleteReview(reviewId) {
         console.log(reviewId)
     }
 
+    function onSetAddReview({ target }) {
+        setIsAddingReview(prevIsAddingReview => !prevIsAddingReview)
+    }
+
     if (!book) return <div>Loading...</div>
+
+
+    const currBookIdx = books.findIndex(book => book.id === bookId)
+    const prevBookId = currBookIdx > 0 ? books[currBookIdx - 1].id : null;
+    const nextBookId = (currBookIdx < books.length - 1) ? books[currBookIdx + 1].id : null;
+
+
     return (
         <React.Fragment>
-
-            <Link to="/book"><button className="btn-back">Back</button></Link>
-            <button>Prev</button>
-            <button>Next</button>
+            <div className="page-btns">
+                <Link to="/book"><button className="btn-back">Back</button></Link>
+                {prevBookId && <Link to={`/book/${prevBookId}`}><button>Prev</button></Link>}
+                {nextBookId && <Link to={`/book/${nextBookId}`}><button>Next</button></Link>}
+            </div>
 
             <section className="book-details">
 
@@ -88,7 +108,8 @@ export function BookDetails() {
             </section>
 
             <section className="add-review">
-                <AddReview onAddReview={onAddReview} />
+                <button onClick={onSetAddReview}>{isAddingReview ? 'Close Review' : 'Add Review'}</button>
+                {isAddingReview && <AddReview onAddReview={onAddReview} />}
             </section>
 
             <section className="reviews">

@@ -43,10 +43,11 @@ export function BookEdit() {
             default:
                 break;
         }
-        if (field === 'amount') {
-            setBookToEdit(prevBook => ({
+        if (bookToEdit.listPrice[field]) {
+            setBookToEdit((prevBook) =>
+            ({
                 ...prevBook, listPrice:
-                    { ...prevBook.listPrice, amount: value }
+                    { ...prevBook.listPrice, [field]: value }
             }))
         }
         else setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
