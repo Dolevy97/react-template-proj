@@ -1,14 +1,15 @@
+const { useParams, Link } = ReactRouterDOM
 import { bookService } from "../services/book.service.js"
-import { utilService } from "../services/util.service.js"
 import { LongTxt } from "./LongTxt.jsx"
 
 bookService
 
 const { useEffect, useState } = React
 
-export function BookDetails({ bookId, onBack }) {
+export function BookDetails() {
 
     const [book, setBook] = useState(null)
+    const { bookId } = useParams()
 
     useEffect(() => {
         bookService.get(bookId)
@@ -17,7 +18,6 @@ export function BookDetails({ bookId, onBack }) {
             })
 
     }, [])
-
 
     function getReadingLength() {
         var readingLength
@@ -48,7 +48,7 @@ export function BookDetails({ bookId, onBack }) {
     if (!book) return <div>Loading...</div>
     return (
         <section className="book-details">
-            <button className="btn-back" onClick={onBack}>{`<- Back`}</button>
+            <button className="btn-back"><Link to="/book">Back</Link></button>
             <img src={book.thumbnail} alt="" />
             {book.listPrice.isOnSale && <img className="sale" src="./assets/img/saletag.png" alt="" />}
             <h2>{book.title}</h2>
@@ -57,9 +57,8 @@ export function BookDetails({ bookId, onBack }) {
             <LongTxt txt={book.description} />
             <h3>{getReadingLength()} ({book.pageCount} pages), {getPublishedDate()} ({book.publishedDate}) </h3>
 
-
             <h3>Genres: {book.categories.map((genre, idx) => {
-                return <React.Fragment key={utilService.makeId()}>
+                return <React.Fragment key={idx}>
                     {idx > 0 && ' '}
                     <span onClick={filterByWord} className='genre'>{genre}</span>
                 </React.Fragment>
