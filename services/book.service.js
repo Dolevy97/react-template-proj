@@ -78,7 +78,25 @@ function getDefaultFilter() {
 }
 
 function getEmptyBook(title = '', price = '') {
-    return { title, price }
+    const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
+    return {
+        title,
+        subtitle: utilService.makeLorem(4),
+        authors: [
+            utilService.makeLorem(1)
+        ],
+        publishedDate: utilService.getRandomIntInclusive(1950, 2024),
+        description: utilService.makeLorem(20),
+        pageCount: utilService.getRandomIntInclusive(20, 600),
+        categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)], ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
+        thumbnail: `http://coding-academy.org/books-photos/${gNextId}.jpg`,
+        language: "en",
+        listPrice: {
+            amount: price,
+            currencyCode: "NIS",
+            isOnSale: Math.random() > 0.7
+        }
+    }
 }
 
 // PRIVATE FUNCTIONS
