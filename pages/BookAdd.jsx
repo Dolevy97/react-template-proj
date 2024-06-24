@@ -5,21 +5,24 @@ const { useEffect, useState } = React
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { bookService } from "../services/book.service.js"
 import { utilService } from "../services/util.service.js"
+import { googleBookService } from "../services/google.book.service.js"
 
 
 
 export function BookAdd() {
     const [books, setBooks] = useState()
-    const tempBooks = [
-        { id: 'D12C4', title: 'test 1', price: 20 },
-        { id: 'G6F42', title: 'test 2', price: 30 },
-        { id: 'H42G4', title: 'test 3', price: 40 }
-    ]
+    const [tempBooks, setTempBooks] = useState()
+
     const navigate = useNavigate()
 
     useEffect(() => {
         bookService.query()
             .then(setBooks)
+
+        googleBookService.query()
+            .then(books => {
+                setTempBooks(books)
+            })
     }, [])
 
     function getBookById(bookId) {
@@ -44,6 +47,7 @@ export function BookAdd() {
             .catch(err => console.log('err:', err))
     }
 
+    if (!tempBooks) return <h4>Loading...</h4>
     return (
         <section className="google-books">
             <form onSubmit={addGoogleBook}>
