@@ -13,7 +13,6 @@ export function BookAdd() {
     const [books, setBooks] = useState()
     const [tempBooks, setTempBooks] = useState()
     const [filter, setFilter] = useState({ title: '' })
-
     const navigate = useNavigate()
 
 
@@ -65,14 +64,21 @@ export function BookAdd() {
         setFilter(prevFilter => ({ ...prevFilter, title: value }))
     }
 
+    function onFilter(ev) {
+        ev.preventDefault()
+        const value = ev.target[0].value
+        setFilter({ title: value })
+    }
+
     const { title } = filter
 
     if (!tempBooks) return <h4>Loading...</h4>
     return (
         <section className="google-books">
-            <form onSubmit={addGoogleBook}>
+            <form onSubmit={() => onFilter(event)}>
                 <label htmlFor="title"></label>
-                <input value={title} onChange={handleTxtChange} type="text" placeholder="Search books" id="title" name="title" />
+                {/* <input value={title} onChange={handleTxtChange} type="text" placeholder="Search books" id="title" name="title" /> */}
+                <input type="text" placeholder="Search books" id="title" name="title" />
                 <button>Submit</button>
             </form>
 
