@@ -1,14 +1,15 @@
-const { useParams, Link } = ReactRouterDOM
+const { useParams, Link, Outlet } = ReactRouterDOM
 import { bookService } from "../services/book.service.js"
+import { utilService } from "../services/util.service.js"
 import { LongTxt } from "../cmps/LongTxt.jsx"
-
-bookService
+import { AddReview } from "../cmps/AddReview.jsx"
 
 const { useEffect, useState } = React
 
 export function BookDetails() {
 
     const [book, setBook] = useState(null)
+
     const { bookId } = useParams()
 
     useEffect(() => {
@@ -45,26 +46,61 @@ export function BookDetails() {
         console.log(filter)
     }
 
+
+    function onAddReview(ev) {
+        ev.preventDefault()
+        const review = { id: utilService.makeId(), fullName: 'Dolev', rating: 5, readAt: '03/05/2024' }
+        bookService.addReview(bookId, review)
+            .then(book => setBook(book))
+    }
+
+    function onDeleteReview(reviewId) {
+        console.log(reviewId)
+    }
+
     if (!book) return <div>Loading...</div>
     return (
-        <section className="book-details">
-            <Link to="/book"><button className="btn-back">Back</button></Link>
-            <img src={book.thumbnail} alt="" />
-            {book.listPrice.isOnSale && <img className="sale" src="./assets/img/saletag.png" alt="" />}
-            <h2>{book.title}</h2>
-            <h3>{book.subtitle}</h3>
-            <h4>-By {`${book.authors.join(' ')}`}</h4>
-            <LongTxt txt={book.description} />
-            <h3>{getReadingLength()} ({book.pageCount} pages), {getPublishedDate()} ({book.publishedDate}) </h3>
+        <React.Fragment>
 
-            <h3>Genres: {book.categories.map((genre, idx) => {
-                return <React.Fragment key={idx}>
-                    {idx > 0 && ' '}
-                    <span onClick={filterByWord} className='genre'>{genre}</span>
-                </React.Fragment>
-            })}</h3>
-            <h2 className={getPriceClass()}>{book.listPrice.amount} {book.listPrice.currencyCode}</h2>
-            <button>Buy Now!</button>
-        </section>
+            <Link to="/book"><button className="btn-back">Back</button></Link>
+
+            <section className="book-details">
+
+                <img src={book.thumbnail} alt="" />
+                {book.listPrice.isOnSale && <img className="sale" src="./assets/img/saletag.png" alt="" />}
+
+                <h2>{book.title}</h2>
+                <h3>{book.subtitle}</h3>
+                <h4>-By {`${book.authors.join(' ')}`}</h4>
+
+                <LongTxt txt={book.description} />
+
+                <h3>{getReadingLength()} ({book.pageCount} pages), {getPublishedDate()} ({book.publishedDate}) </h3>
+                <h3>Genres: {book.categories.map((genre, idx) => {
+                    return <React.Fragment key={utilService.makeId()}>
+                        {idx > 0 && ' '}
+                        <span onClick={filterByWord} className='genre'>{genre}</span>
+                    </React.Fragment>
+                })}</h3>
+                <h2 className={getPriceClass()}>{book.listPrice.amount} {book.listPrice.currencyCode}</h2>
+                <button>Buy Now!</button>
+            </section>
+
+            <section className="add-review">
+                <AddReview onAddReview={onAddReview} />
+            </section>
+
+            <section className="reviews">
+                <h2>Reviews:</h2>
+                {book.reviews.map(review => {
+                    return <div className="review-container" key={review.id}>
+                        <h3>Name: {review.fullName}</h3>
+                        <h3>Rating: {review.rating} stars</h3>
+                        <h3>Read at: {review.readAt}</h3>
+                        <button onClick={() => onDeleteReview(review.id)}>X</button>
+                    </div>
+                })}
+            </section>
+        </React.Fragment>
     )
 }

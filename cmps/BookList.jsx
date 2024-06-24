@@ -1,5 +1,7 @@
 const { Link, NavLink, useNavigate } = ReactRouterDOM
 
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+
 import { BookPreview } from "./BookPreview.jsx";
 
 export function BookList({ books, onRemoveBook }) {
@@ -9,6 +11,7 @@ export function BookList({ books, onRemoveBook }) {
     function moveToBook(bookId) {
         navigate(`/book/${bookId}`)
     }
+
 
     return (
         <section className="books-container">

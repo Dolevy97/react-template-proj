@@ -7,7 +7,6 @@ import { bookService } from "../services/book.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 
 
-
 export function BookEdit() {
 
     const [bookToEdit, setBookToEdit] = useState(bookService.getEmptyBook())
@@ -23,7 +22,6 @@ export function BookEdit() {
         bookService.get(bookId)
             .then(book => {
                 setBookToEdit(book)
-                console.log(book)
             })
             .catch(err => console.log('err:', err))
     }
@@ -50,7 +48,8 @@ export function BookEdit() {
                 ...prevBook, listPrice:
                     { ...prevBook.listPrice, amount: value }
             }))
-        } else setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
+        }
+        else setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
     }
 
     function onSaveBook(ev) {

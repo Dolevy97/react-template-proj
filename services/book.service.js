@@ -14,7 +14,8 @@ export const bookService = {
     getNextBookId,
     setFilterBy,
     getDefaultFilter,
-    getEmptyBook
+    getEmptyBook,
+    addReview
 }
 
 function query(filterBy = {}) {
@@ -95,8 +96,24 @@ function getEmptyBook(title = '', amount = 0, thumbnail = `http://coding-academy
             amount,
             currencyCode: "NIS",
             isOnSale: Math.random() > 0.7
-        }
+        },
+        reviews: [
+            {
+                id: utilService.makeId(),
+                fullName: utilService.makeLorem(1),
+                rating: utilService.getRandomIntInclusive(1, 5),
+                readAt: '06/24/2024'
+            }
+        ]
     }
+}
+
+function addReview(bookId, review) {
+    return storageService.get(BOOK_KEY, bookId)
+        .then(book => {
+            book.reviews.push(review)
+            return storageService.put(BOOK_KEY, book)
+        })
 }
 
 // PRIVATE FUNCTIONS
@@ -132,6 +149,15 @@ function _createBook() {
             amount: utilService.getRandomIntInclusive(80, 500),
             currencyCode: "EUR",
             isOnSale: Math.random() > 0.7
-        }
+        },
+        reviews: [
+            {
+                id: utilService.makeId(),
+                fullName: utilService.makeLorem(1),
+                rating: utilService.getRandomIntInclusive(1, 5),
+                readAt: '06/24/2024'
+            }
+        ]
+
     }
 }

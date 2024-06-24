@@ -4,6 +4,7 @@ const { useState, useEffect } = React;
 import { BookFilter } from "../cmps/BookFilter.jsx";
 import { BookList } from "../cmps/Booklist.jsx";
 import { bookService } from "../services/book.service.js";
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
@@ -28,6 +29,7 @@ export function BookIndex() {
         bookService.remove(bookId)
             .then(() => {
                 setBooks(books => books.filter(book => book.id !== bookId))
+                showSuccessMsg('Book deleted successfully!')
             })
             .catch(err => console.log(err))
     }
