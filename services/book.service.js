@@ -11,7 +11,6 @@ export const bookService = {
     get,
     remove,
     save,
-    getNextBookId,
     setFilterBy,
     getDefaultFilter,
     getEmptyBook,
@@ -19,7 +18,9 @@ export const bookService = {
     deleteReview,
     getEmptyReview,
     addGoogleItem,
-    getFilterFromSearchParams
+    getFilterFromSearchParams,
+    getCategoryStats,
+    getPriceStats,
 }
 
 function query(filterBy = {}) {
@@ -145,6 +146,24 @@ function getFilterFromSearchParams(searchParams) {
     return filterBy
 }
 
+function getCategoryStats() {
+    return storageService.query(BOOK_KEY)
+        .then(books => {
+            const bookCountByCategoriesMap = _getBookCountByCategoriesMap(books)
+            const data = Object.keys(bookCountByCategoriesMap).map(category => ({title: category, value: bookCountByCategoriesMap[category]}))
+            return data
+        })
+}
+
+function getPriceStats() {
+    return storageService.query(BOOK_KEY)
+        .then(books => {
+            const bookCountByPriceMap = _getBookCountByPriceMap(books)
+            const data = Object.keys(bookCountByPriceMap).map(price => ({title: price, value: bookCountByPriceMap[price]}))
+            return data
+        })
+}
+
 // PRIVATE FUNCTIONS
 
 function _createBooks() {
@@ -189,4 +208,25 @@ function _createBook() {
         ]
 
     }
+}
+
+function _getBookCountByPriceMap(books) {
+    const bookCountByPriceMap = books.reduce((map, book) => {
+        if (book.listPrice.amount < 120) map.cheap++
+        else if (book.listPrice.amount < 200) map.decent++
+        else map.expensive++
+        return map
+    }, { cheap: 0, decent: 0, expensive: 0 })
+    return bookCountByPriceMap
+}
+
+function _getBookCountByCategoriesMap(books) {
+    const bookCountByCategoriesMap = books.reduce((map, book) => {
+        book.categories.forEach(category => {
+            if (!map[category]) map[category] = 0
+            map[category]++
+        })
+        return map
+    }, {})
+    return bookCountByCategoriesMap
 }
