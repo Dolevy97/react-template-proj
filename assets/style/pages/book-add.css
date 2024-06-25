@@ -1,5 +1,4 @@
 .google-books {
-
     margin: 1em auto;
     width: fit-content;
 }
@@ -20,6 +19,7 @@
     align-items: center;
     gap: 20px;
 
+    margin-block: .5em;
     border-radius: 20px;
     transition: background-color .2s;
 }
@@ -41,5 +41,6 @@
 }
 
 .book-cover-thumbnail {
-    height: 200px;
+    height: auto;
+    max-width: 20%;
 }

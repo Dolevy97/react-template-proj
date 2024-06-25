@@ -1,14 +1,15 @@
 const { Link, useSearchParams } = ReactRouterDOM
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 import { BookFilter } from "../cmps/BookFilter.jsx";
 import { BookList } from "../cmps/BookList.jsx";
 import { bookService } from "../services/book.service.js";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { utilService } from "../services/util.service.js";
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
-    
+
     const [searchParams, setSearchParams] = useSearchParams()
     const defaultFilter = bookService.getFilterFromSearchParams(searchParams)
     const [filterBy, setFilterBy] = useState(defaultFilter)
@@ -29,13 +30,17 @@ export function BookIndex() {
         setFilterBy({ ...filterBy })
     }
 
-    function onRemoveBook(bookId) {
-        bookService.remove(bookId)
+    function onRemoveBook(bookId, ref) {
+        utilService.animateCSS(ref, 'fadeOut', false)
             .then(() => {
-                setBooks(books => books.filter(book => book.id !== bookId))
-                showSuccessMsg('Book deleted successfully!')
+                bookService.remove(bookId)
+                    .then(() => {
+                        setBooks(books => books.filter(book => book.id !== bookId))
+                        showSuccessMsg('Book deleted successfully!')
+                    })
+                    .catch(err => console.log(err))
             })
-            .catch(err => console.log(err))
+
     }
 
 

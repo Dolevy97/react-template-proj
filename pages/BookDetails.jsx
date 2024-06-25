@@ -3,8 +3,9 @@ import { bookService } from "../services/book.service.js"
 import { utilService } from "../services/util.service.js"
 import { LongTxt } from "../cmps/LongTxt.jsx"
 import { AddReview } from "../cmps/AddReview.jsx"
+import { ReviewList } from "../cmps/reviewList.jsx"
 
-const { useEffect, useState } = React
+const { useEffect, useState, useRef } = React
 
 export function BookDetails() {
 
@@ -13,6 +14,7 @@ export function BookDetails() {
     const [books, setBooks] = useState(null)
 
     const { bookId } = useParams()
+    const reviewRef = useRef({})
 
     useEffect(() => {
         bookService.get(bookId)
@@ -61,9 +63,14 @@ export function BookDetails() {
             })
     }
 
-    function onDeleteReview(reviewId) {
-        bookService.deleteReview(book, reviewId)
-            .then(prevBook => setBook({ ...prevBook }))
+    function onDeleteReview(reviewId, ref) {
+        utilService.animateCSS(ref, 'bounceOut', false)
+            .then(() => {
+                bookService.deleteReview(book, reviewId)
+                    .then(prevBook => {
+                        setBook({ ...prevBook })
+                    })
+            })
     }
 
     function onSetAddReview({ target }) {
@@ -87,7 +94,7 @@ export function BookDetails() {
 
             <section className="book-details">
 
-                <img src={book.thumbnail} alt="" />
+                <img className="book-details-image" src={book.thumbnail} alt="" />
                 {book.thumbnail && book.listPrice.isOnSale && <img className="sale" src="./assets/img/saletag.png" alt="" />}
                 {!book.thumbnail && book.listPrice.isOnSale && <h1>This book is on sale!</h1>}
 
@@ -113,18 +120,8 @@ export function BookDetails() {
                 {isAddingReview && <AddReview onAddReview={onAddReview} />}
             </section>
 
-            <section className="reviews">
-                <h2>Reviews:</h2>
-                {!book.reviews && <h3>No reviews yet.. Add the first one!</h3>}
-                {book.reviews && book.reviews.map(review => {
-                    return <div className="review-container" key={review.id}>
-                        <h3>Name: {review.fullName}</h3>
-                        <h3>Rating: {review.rating} stars</h3>
-                        <h3>Read at: {review.readAt}</h3>
-                        <button onClick={() => onDeleteReview(review.id)}>X</button>
-                    </div>
-                })}
-            </section>
+            <ReviewList reviews={book.reviews} onDeleteReview={onDeleteReview} />
+
         </React.Fragment>
     )
 }

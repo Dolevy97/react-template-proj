@@ -1,6 +1,10 @@
 import { storageService } from './async-storage.service.js'
+import { utilService } from './util.service.js'
 
 const API_KEY = 'AIzaSyC3JYJV46HLqEVYXfj9bo5_b4yO0UOD_WI'
+const STORAGE_KEY = 'gBooksDB'
+
+const gBookCache = utilService.loadFromStorage(STORAGE_KEY) || {}
 
 export const googleBookService = {
     query,
@@ -8,37 +12,11 @@ export const googleBookService = {
     save,
 }
 
-
-function searchGoogleBooks(value) {
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(value)}&key=${API_KEY}`
-    return fetch(url)
-        .then(res => {
-            if (res.ok) return res.json()
-            else throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-            return data.items
-        })
-        .catch(error => console.log(error))
-}
-
-function getImageFromGoogle(bookId) {
-    const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`
-    return fetch(url)
-        .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            else throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-            return data.volumeInfo.imageLinks.small
-        })
-        .catch(error => console.log(error))
-}
-
 function query(filterBy = {}) {
     if (!filterBy.title) return Promise.resolve(null)
+    if (gBookCache[filterBy.title]) {
+        return Promise.resolve(gBookCache[filterBy.title].books)
+    }
     return searchGoogleBooks(filterBy.title)
         .then(books => {
             // Map over each book to fetch its thumbnail and format the data
@@ -57,7 +35,7 @@ function query(filterBy = {}) {
                             description: book.volumeInfo.description || '',
                             pageCount: book.volumeInfo.pageCount || 0,
                             categories: book.volumeInfo.categories || [],
-                            thumbnail: thumbnail,
+                            thumbnail: thumbnail || `https://marketplace.canva.com/EAFMf17QgBs/1/0/1003w/canva-green-and-yellow-modern-book-cover-business-Ah-do4Y91lk.jpg`,
                             language: book.volumeInfo.language
                         }
                     })
@@ -72,19 +50,53 @@ function query(filterBy = {}) {
                             description: book.volumeInfo.description || '',
                             pageCount: book.volumeInfo.pageCount || 0,
                             categories: book.volumeInfo.categories || [],
-                            thumbnail: null,
+                            thumbnail: `https://marketplace.canva.com/EAFMf17QgBs/1/0/1003w/canva-green-and-yellow-modern-book-cover-business-Ah-do4Y91lk.jpg`,
                             language: book.volumeInfo.language
                         }
                     })
             })
 
-            return Promise.all(promises)
+            return Promise.all(promises).then(books => {
+                gBookCache[filterBy.title] = { books }
+                utilService.saveToStorage(STORAGE_KEY, gBookCache)
+                return books
+            })
         })
         .catch(error => {
             console.error('Error querying Google Books:', error)
             return []
         })
 }
+
+function searchGoogleBooks(value) {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(value)}&key=${API_KEY}`
+    return fetch(url)
+        .then(res => {
+            if (res.ok) return res.json()
+            else throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            return data.items
+        })
+        .catch(error => console.log(error))
+}
+
+
+function getImageFromGoogle(bookId) {
+    const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`
+    return fetch(url)
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            else throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            return data.volumeInfo.imageLinks.small
+        })
+        .catch(error => console.log(error))
+}
+
 
 function get(bookId) {
     return storageService.get(BOOK_KEY, bookId)

@@ -61,3 +61,7 @@ button {
 .page-btns {
     margin-block: 1em;
 }
+
+.book-details-image {
+    width: 300px;
+}

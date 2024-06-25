@@ -47,7 +47,7 @@ export function BookAdd() {
         const book = getBookById(bookId)
         let newBook = {
             ...book, listPrice: {
-                amount: 60, currencyCode: 'NIS', isOnSale: Math.random() > 0.7
+                amount: utilService.getRandomIntInclusive(60, 200), currencyCode: 'NIS', isOnSale: Math.random() > 0.7
             }
         }
         const findBook = books.find(book => book.id === bookId)
