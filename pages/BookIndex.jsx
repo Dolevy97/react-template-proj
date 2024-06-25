@@ -1,17 +1,20 @@
-const { Link } = ReactRouterDOM
+const { Link, useSearchParams } = ReactRouterDOM
 const { useState, useEffect } = React;
 
 import { BookFilter } from "../cmps/BookFilter.jsx";
 import { BookList } from "../cmps/BookList.jsx";
 import { bookService } from "../services/book.service.js";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
-import { BookAdd } from "./BookAdd.jsx";
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
-    const [filterBy, setFilterBy] = useState(bookService.getDefaultFilter())
+    
+    const [searchParams, setSearchParams] = useSearchParams()
+    const defaultFilter = bookService.getFilterFromSearchParams(searchParams)
+    const [filterBy, setFilterBy] = useState(defaultFilter)
 
     useEffect(() => {
+        setSearchParams(filterBy)
         loadBooks()
     }, [filterBy])
 

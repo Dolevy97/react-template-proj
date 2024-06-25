@@ -18,7 +18,8 @@ export const bookService = {
     addReview,
     deleteReview,
     getEmptyReview,
-    addGoogleItem
+    addGoogleItem,
+    getFilterFromSearchParams
 }
 
 function query(filterBy = {}) {
@@ -77,10 +78,6 @@ function getNextBookId(bookId) {
         })
 }
 
-function getDefaultFilter() {
-    return { title: '', price: '', year: '', bookLength: '0' }
-}
-
 function getEmptyBook(title = '', amount = 0, thumbnail = `http://coding-academy.org/books-photos/${gNextId}.jpg`) {
     const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
     return {
@@ -135,6 +132,18 @@ function addGoogleItem(book) {
     return storageService.postGoogle(BOOK_KEY, book)
 }
 
+function getDefaultFilter() {
+    return { title: '', price: '', year: '', bookLength: '0' }
+}
+
+function getFilterFromSearchParams(searchParams) {
+    const defaultFilter = getDefaultFilter()
+    const filterBy = {}
+    for (const field in defaultFilter) {
+        filterBy[field] = searchParams.get(field) || ''
+    }
+    return filterBy
+}
 
 // PRIVATE FUNCTIONS
 

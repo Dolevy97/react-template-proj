@@ -13,11 +13,13 @@ export function BookAdd() {
     const [books, setBooks] = useState()
     const [googleBooks, setGoogleBooks] = useState()
     const [filter, setFilter] = useState({ title: '' })
+
     const navigate = useNavigate()
 
 
     useEffect(() => {
         loadBooks()
+        setFilter(filter)
     }, [filter])
 
     useEffect(() => {
@@ -57,10 +59,6 @@ export function BookAdd() {
             })
             .catch(err => console.log('err:', err))
     }
-
-    useEffect(() => {
-        setFilter(filter)
-    }, [filter])
 
     // function handleTxtChange({ target }) {
     //     const { value } = target
