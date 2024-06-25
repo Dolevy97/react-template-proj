@@ -22,22 +22,46 @@ function searchGoogleBooks(value) {
         .catch(error => console.log(error))
 }
 
+function getImageFromGoogle(bookId) {
+    const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`
+    return fetch(url)
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            else throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            return data.volumeInfo.imageLinks.small
+        })
+        .catch(error => console.log(error))
+}
+
 function query(filterBy = {}) {
     if (!filterBy.title) return Promise.resolve(null)
     return searchGoogleBooks(filterBy.title)
         .then(books => {
-            books = books.map(book => {
-                return {
-                    id: book.id, title: book.volumeInfo.title, subtitle: book.volumeInfo.title, authors: book.volumeInfo.authors,
-                    publishedDate: book.volumeInfo.publishedDate, description: book.volumeInfo.description, pageCount: book.volumeInfo.pageCount,
-                    categories: book.volumeInfo.categories, thumbnail: book.volumeInfo.imageLinks.thumbnail, language: book.volumeInfo.language
-                }
-            })
-            // if (filterBy.title) {
-            //     const regex = new RegExp(filterBy.title, 'i')
-            //     books = books.filter(book => regex.test(book.title))
-            // }
-            return books
+            // Map over each book to fetch its thumbnail and format the data
+            const promises = books.map(book => {
+                return getImageFromGoogle(book.id)
+                    .then(thumbnail => {
+                        thumbnail = thumbnail.slice(4)
+                        thumbnail = 'https' + thumbnail
+                        return {
+                            id: book.id,
+                            title: book.volumeInfo.title,
+                            subtitle: book.volumeInfo.subtitle || '',
+                            authors: book.volumeInfo.authors || [],
+                            publishedDate: book.volumeInfo.publishedDate,
+                            description: book.volumeInfo.description || '',
+                            pageCount: book.volumeInfo.pageCount || 0,
+                            categories: book.volumeInfo.categories || [],
+                            thumbnail: thumbnail,
+                            language: book.volumeInfo.language
+                        };
+                    });
+            });
+            return Promise.all(promises);
         })
 }
 

@@ -4,12 +4,8 @@ export function LongTxt({ txt }, { length = 100 }) {
     const [isShowingMore, setIsShowingMore] = useState(false)
 
     function getShortTxt() {
-        if (txt.length > length) {
-            return txt.slice(0, length)
-        }
-        else {
-            return txt
-        }
+        if (txt.length > length) return txt.slice(0, length)
+        return txt
     }
 
     function showMore() {

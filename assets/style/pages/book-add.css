@@ -5,10 +5,18 @@
 }
 
 .book-item {
-    display: flex;  
+    display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+
+    border-radius: 20px;
+    transition: background-color .2s;
+}
+
+.book-item:hover {
+    background-color: var(--clr2);
+    cursor: pointer;
 }
 
 .btn-google-add {

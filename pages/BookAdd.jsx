@@ -75,8 +75,6 @@ export function BookAdd() {
 
     const { title } = filter
 
-    // if (!googleBooks) return <h2>Loading...</h2>
-
     return (
         <section className="google-books">
             <form onSubmit={() => onFilter(event)}>
@@ -87,9 +85,9 @@ export function BookAdd() {
             </form>
 
             <section className="books-list">
-                {googleBooks && googleBooks.map(book => <div className="book-item" key={book.id}>
+                {googleBooks && googleBooks.map(book => <div onClick={() => addGoogleBook(event, `${book.id}`)} className="book-item" key={book.id}>
                     <h3>{book.title}</h3>
-                    <button onClick={() => addGoogleBook(event, `${book.id}`)} className="btn-google-add">+</button></div>)}
+                    <button className="btn-google-add">+</button></div>)}
             </section>
         </section>
     )

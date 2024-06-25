@@ -1,5 +1,5 @@
 
-const { useNavigate, useParams } = ReactRouterDOM
+const { useNavigate, useParams, Link } = ReactRouterDOM
 
 const { useState, useEffect } = React
 
@@ -68,6 +68,8 @@ export function BookEdit() {
 
     return (
         <section className="book-edit-container">
+            <Link to="/add"><button className="btn-add">Add Book from Google Books</button></Link>
+
             <h1>{bookId ? 'Edit' : 'Add'} Book</h1>
             <form className="book-edit-form" onSubmit={onSaveBook}>
                 <label htmlFor="title">Title</label>
