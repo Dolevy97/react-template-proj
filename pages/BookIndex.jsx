@@ -2,7 +2,7 @@ const { Link } = ReactRouterDOM
 const { useState, useEffect } = React;
 
 import { BookFilter } from "../cmps/BookFilter.jsx";
-import { BookList } from "../cmps/Booklist.jsx";
+import { BookList } from "../cmps/BookList.jsx";
 import { bookService } from "../services/book.service.js";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { BookAdd } from "./BookAdd.jsx";
