@@ -86,6 +86,7 @@ export function BookAdd() {
 
             <section className="books-list">
                 {googleBooks && googleBooks.map(book => <div onClick={() => addGoogleBook(event, `${book.id}`)} className="book-item" key={book.id}>
+                    {book.thumbnail && <img className="book-cover-thumbnail" src={book.thumbnail} alt="Book thumbnail" />}
                     <h3>{book.title}</h3>
                     <button className="btn-google-add">+</button></div>)}
             </section>

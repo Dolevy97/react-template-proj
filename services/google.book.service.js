@@ -45,8 +45,9 @@ function query(filterBy = {}) {
             const promises = books.map(book => {
                 return getImageFromGoogle(book.id)
                     .then(thumbnail => {
-                        thumbnail = thumbnail.slice(4)
-                        thumbnail = 'https' + thumbnail
+                        if (thumbnail && thumbnail.startsWith('http:')) {
+                            thumbnail = thumbnail.replace('http:', 'https:')
+                        }
                         return {
                             id: book.id,
                             title: book.volumeInfo.title,
@@ -58,10 +59,30 @@ function query(filterBy = {}) {
                             categories: book.volumeInfo.categories || [],
                             thumbnail: thumbnail,
                             language: book.volumeInfo.language
-                        };
-                    });
-            });
-            return Promise.all(promises);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching thumbnail for book:', book.id, error);
+                        return {
+                            id: book.id,
+                            title: book.volumeInfo.title,
+                            subtitle: book.volumeInfo.subtitle || '',
+                            authors: book.volumeInfo.authors || [],
+                            publishedDate: book.volumeInfo.publishedDate,
+                            description: book.volumeInfo.description || '',
+                            pageCount: book.volumeInfo.pageCount || 0,
+                            categories: book.volumeInfo.categories || [],
+                            thumbnail: null,
+                            language: book.volumeInfo.language
+                        }
+                    })
+            })
+
+            return Promise.all(promises)
+        })
+        .catch(error => {
+            console.error('Error querying Google Books:', error)
+            return []
         })
 }
 
