@@ -16,6 +16,7 @@ export const bookService = {
     getDefaultFilter,
     getEmptyBook,
     addReview,
+    deleteReview,
     getEmptyReview,
     addGoogleItem
 }
@@ -114,9 +115,16 @@ function addReview(bookId, review) {
     review.id = utilService.makeId()
     return storageService.get(BOOK_KEY, bookId)
         .then(book => {
-            book.reviews.push(review)
+            if (book.reviews) book.reviews.push(review)
+            else book = { ...book, reviews: [review] }
             return storageService.put(BOOK_KEY, book)
         })
+}
+
+function deleteReview(book, reviewId) {
+    let reviewIdx = book.reviews.findIndex(review => review.id === reviewId)
+    book.reviews.splice(reviewIdx, 1)
+    return storageService.put(BOOK_KEY, book)
 }
 
 function getEmptyReview() {
@@ -126,6 +134,7 @@ function getEmptyReview() {
 function addGoogleItem(book) {
     return storageService.postGoogle(BOOK_KEY, book)
 }
+
 
 // PRIVATE FUNCTIONS
 

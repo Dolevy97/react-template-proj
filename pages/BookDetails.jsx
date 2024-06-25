@@ -62,7 +62,8 @@ export function BookDetails() {
     }
 
     function onDeleteReview(reviewId) {
-        console.log(reviewId)
+        bookService.deleteReview(book, reviewId)
+            .then(prevBook => setBook({ ...prevBook }))
     }
 
     function onSetAddReview({ target }) {
@@ -71,10 +72,10 @@ export function BookDetails() {
 
     if (!book) return <div>Loading...</div>
     if (!books) return
+
     const currBookIdx = books.findIndex(book => book.id === bookId)
     const prevBookId = currBookIdx > 0 ? books[currBookIdx - 1].id : null;
     const nextBookId = (currBookIdx < books.length - 1) ? books[currBookIdx + 1].id : null;
-
 
     return (
         <React.Fragment>
@@ -113,7 +114,8 @@ export function BookDetails() {
 
             <section className="reviews">
                 <h2>Reviews:</h2>
-                {book.reviews.map(review => {
+                {!book.reviews && <h3>No reviews yet.. Add the first one!</h3>}
+                {book.reviews && book.reviews.map(review => {
                     return <div className="review-container" key={review.id}>
                         <h3>Name: {review.fullName}</h3>
                         <h3>Rating: {review.rating} stars</h3>
