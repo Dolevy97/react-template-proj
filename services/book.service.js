@@ -1,5 +1,6 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
+import { showErrorMsg } from './event-bus.service.js'
 
 const BOOK_KEY = 'bookDB'
 var gNextId = 1
@@ -62,6 +63,7 @@ function save(book) {
         return storageService.post(BOOK_KEY, book)
     }
 }
+
 function setFilterBy(filterBy = {}) {
     if (filterBy.txt !== undefined) filterBy.txt = filterBy.txt
     if (filterBy.price !== undefined) filterBy.price = filterBy.price
@@ -130,7 +132,12 @@ function getEmptyReview() {
 }
 
 function addGoogleItem(book) {
-    return storageService.postGoogle(BOOK_KEY, book)
+    return query().then(books => {
+        const findBook = books.find(localBook => localBook.id === book.id)
+        if (findBook) return Promise.reject('Book already added.')
+        return storageService.postGoogle(BOOK_KEY, book)
+    })
+
 }
 
 function getDefaultFilter() {
@@ -150,7 +157,7 @@ function getCategoryStats() {
     return storageService.query(BOOK_KEY)
         .then(books => {
             const bookCountByCategoriesMap = _getBookCountByCategoriesMap(books)
-            const data = Object.keys(bookCountByCategoriesMap).map(category => ({title: category, value: bookCountByCategoriesMap[category]}))
+            const data = Object.keys(bookCountByCategoriesMap).map(category => ({ title: category, value: bookCountByCategoriesMap[category] }))
             return data
         })
 }
@@ -159,7 +166,7 @@ function getPriceStats() {
     return storageService.query(BOOK_KEY)
         .then(books => {
             const bookCountByPriceMap = _getBookCountByPriceMap(books)
-            const data = Object.keys(bookCountByPriceMap).map(price => ({title: price, value: bookCountByPriceMap[price]}))
+            const data = Object.keys(bookCountByPriceMap).map(price => ({ title: price, value: bookCountByPriceMap[price] }))
             return data
         })
 }

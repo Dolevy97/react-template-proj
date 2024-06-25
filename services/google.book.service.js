@@ -97,7 +97,6 @@ function getImageFromGoogle(bookId) {
         .catch(error => console.log(error))
 }
 
-
 function get(bookId) {
     return storageService.get(BOOK_KEY, bookId)
 }
